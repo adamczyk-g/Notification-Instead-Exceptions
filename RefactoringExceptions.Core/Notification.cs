@@ -10,7 +10,13 @@ namespace RefactoringExceptions.Core
         public void AddError(string message) => AddError(message, null);
         public void AddError(string message, Exception exception) => errors.Add(new Error(message, exception));
         public bool HasErrors() => errors.Count != 0;
-        public string ErrorMessage => string.Join(Environment.NewLine, errors.Select(error => error.Message).ToList());
+        public string ErrorMessage
+        {
+            get
+            {
+                return string.Join(Environment.NewLine, errors.Select(error => error.Message).ToList());
+            }
+        }
         private class Error
         {
             public Error(String message, Exception cause)

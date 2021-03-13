@@ -53,7 +53,7 @@ namespace RefactoringExceptions.Core.Tests
 
             SimpleBookingRequest bookingRequest = new SimpleBookingRequest(numberOfSeats:string.Empty, bookingDate:"2222-01-01");
 
-            Assert.Throws(typeof(ArgumentOutOfRangeException), () => bookingRequest.Check(today));
+            Assert.AreEqual("number of seats cannot be empty", bookingRequest.Validation(today).ErrorMessage);
         }
 
         [TestCase("-1")]
@@ -65,7 +65,7 @@ namespace RefactoringExceptions.Core.Tests
 
             SimpleBookingRequest bookingRequest = new SimpleBookingRequest(seatsNumber, bookingDate:"2222-01-01");
 
-            Assert.Throws(typeof(ArgumentOutOfRangeException), () => bookingRequest.Check(today));
+            Assert.AreEqual("number of seats must be positive", bookingRequest.Validation(today).ErrorMessage);
         }
     }
 }

@@ -24,14 +24,9 @@ namespace RefactoringExceptions.WinForms.Presenter
 
             BookingRequest bookingRequest = bookingFactory.CreateBookingRequest(mainView.NumberOfSeats, mainView.DateOfThePerformance);
 
-            try
-            {
-                bookingRequest.Check(todayDate);
-            }
-            catch(Exception exception)
-            {
-                mainView.ShowMessage(exception.Message);
-            }
+            Notification notyfication = bookingRequest.Validation(todayDate);
+
+            mainView.ShowMessage(notyfication.ErrorMessage);
         }
     }
 }

@@ -12,32 +12,13 @@ namespace RefactoringExceptions.Core
             this.dateOfThePerformance = bookingDate;
         }
 
-        public void Check(TodayDate today)
-        {
-            if (Validation(today).HasErrors())
-                throw new ArgumentOutOfRangeException(Validation(today).ErrorMessage);
-        }
-
         public Notification Validation(TodayDate today)
         {
             Notification note = new Notification();
 
             ValidateDate(today, note);
 
-            int parsedNumberOfSeats;
-
-            if (numberOfSeats == string.Empty) throw new ArgumentOutOfRangeException("number of seats cannot be empty");
-
-            try
-            {
-                parsedNumberOfSeats = Convert.ToInt32(numberOfSeats);
-            }
-            catch (System.FormatException e)
-            {
-                throw new ArgumentOutOfRangeException("Invalid format for number of seats", e);
-            }
-
-            if (parsedNumberOfSeats < 1) throw new ArgumentOutOfRangeException("number of seats must be positive");
+            ValidateNumberOfSeats(note);
 
             return note;
         }
@@ -63,6 +44,29 @@ namespace RefactoringExceptions.Core
             }
 
             if (parsedDate.IsBefore(today.Date)) note.AddError("date cannot be before today");
+        }
+
+        private void ValidateNumberOfSeats(Notification note)
+        {
+            int parsedNumberOfSeats;
+
+            if (numberOfSeats == string.Empty) 
+            { 
+                note.AddError("number of seats cannot be empty");
+                return;
+            }
+
+            try
+            {
+                parsedNumberOfSeats = Convert.ToInt32(numberOfSeats);
+            }
+            catch (System.FormatException e)
+            {
+                note.AddError("Invalid format for number of seats", e);
+                return;
+            }
+
+            if (parsedNumberOfSeats < 1) note.AddError("number of seats must be positive");
         }
     }
 }

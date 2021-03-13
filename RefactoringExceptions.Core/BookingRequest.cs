@@ -2,6 +2,6 @@
 {
     public interface BookingRequest
     {
-        public void Check(TodayDate today);
+        public Notification Validation(TodayDate today);
     }
 }
