@@ -9,5 +9,6 @@ namespace RefactoringExceptions.Core
         private List<string> errors = new List<string>();
         public void AddError(string message) => errors.Add(message);
         public bool HasErrors() => errors.Count != 0;
+        public string ErrorMessage => string.Join(Environment.NewLine, errors);
     }
 }

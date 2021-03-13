@@ -14,9 +14,17 @@ namespace RefactoringExceptions.Core
 
         public void Check(TodayDate today)
         {
+            if (Validation(today).HasErrors())
+                throw new ArgumentOutOfRangeException(Validation(today).ErrorMessage);
+        }
+
+        private Notification Validation(TodayDate today)
+        {
+            Notification note = new Notification();
+
             if (dateOfThePerformance == null) throw new ArgumentNullException("date is missing");
 
-            DateTime parsedDate;            
+            DateTime parsedDate;
 
             try
             {
@@ -33,7 +41,7 @@ namespace RefactoringExceptions.Core
             int parsedNumberOfSeats;
 
             if (numberOfSeats == string.Empty) throw new ArgumentOutOfRangeException("number of seats cannot be empty");
-            
+
             try
             {
                 parsedNumberOfSeats = Convert.ToInt32(numberOfSeats);
@@ -41,10 +49,12 @@ namespace RefactoringExceptions.Core
             catch (System.FormatException e)
             {
                 throw new ArgumentOutOfRangeException("Invalid format for number of seats", e);
-            }                     
-            
+            }
+
             if (parsedNumberOfSeats < 1) throw new ArgumentOutOfRangeException("number of seats must be positive");
-        }    
+
+            return note;
+        }
     }
 }
     
