@@ -20,7 +20,7 @@ namespace RefactoringExceptions.Core.Tests
 
             SimpleBookingRequest bookingRequest = new SimpleBookingRequest("1",null);
 
-;           Assert.Throws(typeof(ArgumentNullException), () => bookingRequest.Check(today));
+;           Assert.AreEqual("date is missing", bookingRequest.Validation(today).ErrorMessage);            
         }
 
         [Test]
@@ -31,7 +31,7 @@ namespace RefactoringExceptions.Core.Tests
 
             SimpleBookingRequest bookingRequest = new SimpleBookingRequest("1", "wrong_format_date");
 
-            Assert.Throws(typeof(ArgumentOutOfRangeException), () => bookingRequest.Check(today));
+            Assert.AreEqual("Invalid format for date", bookingRequest.Validation(today).ErrorMessage);
         }
 
         [Test]
@@ -42,7 +42,7 @@ namespace RefactoringExceptions.Core.Tests
 
             SimpleBookingRequest bookingRequest = new SimpleBookingRequest(numberOfSeats:"1", bookingDate:"1111-01-01");
 
-            Assert.Throws(typeof(ArgumentOutOfRangeException), () => bookingRequest.Check(today));
+            Assert.AreEqual("date cannot be before today", bookingRequest.Validation(today).ErrorMessage);
         }
 
         [Test]

@@ -18,25 +18,11 @@ namespace RefactoringExceptions.Core
                 throw new ArgumentOutOfRangeException(Validation(today).ErrorMessage);
         }
 
-        private Notification Validation(TodayDate today)
+        public Notification Validation(TodayDate today)
         {
             Notification note = new Notification();
 
-            if (dateOfThePerformance == null) throw new ArgumentNullException("date is missing");
-
-            DateTime parsedDate;
-
-            try
-            {
-                parsedDate = DateTime.Parse(dateOfThePerformance);
-            }
-            catch (System.FormatException e)
-            {
-                throw new ArgumentOutOfRangeException("Invalid format for date", e);
-            }
-
-            if (parsedDate.IsBefore(today.Date)) throw new ArgumentOutOfRangeException("date cannot be before today");
-
+            ValidateDate(today, note);
 
             int parsedNumberOfSeats;
 
@@ -54,6 +40,29 @@ namespace RefactoringExceptions.Core
             if (parsedNumberOfSeats < 1) throw new ArgumentOutOfRangeException("number of seats must be positive");
 
             return note;
+        }
+
+        private void ValidateDate(TodayDate today, Notification note)
+        {
+            if (dateOfThePerformance == null) 
+            { 
+                note.AddError("date is missing"); 
+                return; 
+            }
+
+            DateTime parsedDate;
+
+            try
+            {
+                parsedDate = DateTime.Parse(dateOfThePerformance);
+            }
+            catch (System.FormatException e)
+            {
+                note.AddError("Invalid format for date", e);
+                return;
+            }
+
+            if (parsedDate.IsBefore(today.Date)) note.AddError("date cannot be before today");
         }
     }
 }
